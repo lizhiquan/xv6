@@ -150,7 +150,7 @@ tin có tên rõ ràng.
 ### `kernel/` — tiến trình, trap, đồng thời
 | Tập tin | Vai trò | Xây ở |
 |------|------|----------|
-| `proc.go` | bảng tiến trình, bộ lập lịch, fork/wait/exit | Ch. 10, 11 |
+| `proc.go` | bảng tiến trình, scheduler, fork/wait/exit | Ch. 10, 11 |
 | `switch.s` | chuyển ngữ cảnh (lưu/khôi phục thanh ghi callee) | Ch. 10 |
 | `trampoline.s` | trampoline trap người dùng↔kernel | Ch. 7 |
 | `trap.go`, `kernelvec.s` | xử lý trap (người dùng và kernel) | Ch. 7 |
@@ -276,11 +276,11 @@ suốt, và ta sẽ nói thẳng về nó mỗi khi nó cắn ta. Những cái l
 
 - **Ban đầu, không có runtime (Ch. 2).** Ta khởi động với một bộ công cụ
   freestanding (một build kiểu TinyGo hoặc đã lược bớt), tự cung cấp vài ký hiệu
-  runtime mà trình biên dịch cần, và tắt bộ thu gom rác cùng bộ lập lịch goroutine
+  runtime mà trình biên dịch cần, và tắt bộ thu gom rác cùng scheduler goroutine
   cho đến khi ta xây xong những thứ nguyên thủy mà chúng cần.
 - **Thu gom rác bên trong kernel (Ch. 4, 10, 12).** Một bộ thu gom có thể tạm
   dừng việc thực thi tại bất kỳ lần cấp phát nào là một hiểm họa trong trình xử
-  lý interrupt, bộ lập lịch và các đường DMA. Ta giữ những đường đó **không cấp phát**,
+  lý interrupt, scheduler và các đường DMA. Ta giữ những đường đó **không cấp phát**,
   đặt heap trên một vùng vật lý cố định tự quản lý bằng tay, và "ghim" bất kỳ bộ
   nhớ nào mà thiết bị đọc hoặc ghi.
 - **`unsafe` và các pragma (Phụ lục B).** Bảng trang, trapframe và thanh ghi thiết
@@ -290,7 +290,7 @@ suốt, và ta sẽ nói thẳng về nó mỗi khi nó cắn ta. Những cái l
   `//go:linkname`.
 - **Goroutine *không phải* là tiến trình của ta (Ch. 10).** Rất hấp dẫn khi ánh
   xạ một tiến trình kernel sang một goroutine. Ta cố tình không làm vậy: ta tự xây
-  cơ chế chuyển ngữ cảnh bằng assembly, vì một bộ lập lịch kernel phải kiểm soát
+  cơ chế chuyển ngữ cảnh bằng assembly, vì một scheduler kernel phải kiểm soát
   chính xác khi nào và ở đâu một lần chuyển xảy ra. Chương đó giải thích lựa chọn
   này đầy đủ.
 
@@ -406,7 +406,7 @@ chen giữa, và trapframe — nhưng những thứ đó chỉ có nghĩa khi ta
 
 1. **Ba nhiệm vụ.** Với mỗi tính năng kernel sau, hãy nói nó chủ yếu phục vụ cái
    nào: cô lập / ghép kênh / trừu tượng hóa: (a) bảng trang, (b) timer interrupt
-   của bộ lập lịch, (c) các syscall `read`/`write`, (d) quy tắc rằng chế
+   của scheduler, (c) các syscall `read`/`write`, (d) quy tắc rằng chế
    độ người dùng không được tắt interrupt. Một số phục vụ nhiều hơn một.
 
 2. **Cú return giả.** Bằng lời của bạn, hãy giải thích vì sao việc vào chế độ

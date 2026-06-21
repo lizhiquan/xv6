@@ -89,8 +89,8 @@ Bạn sẽ cài **cả hai**, và chúng đóng vai trò khác nhau:
 - **`go`** — cho các chương trình phụ trợ phía host (ví dụ một công cụ dựng ảnh hệ
   thống tập tin ban đầu) và để chạy kiểm thử trên máy phát triển của bạn.
 - **`tinygo`** — để biên dịch kernel và các chương trình người dùng thành một ảnh
-  RISC-V không có hệ điều hành bên dưới. TinyGo cho ta tắt bộ thu gom rác và bộ
-  lập lịch, và xuất ra một nhị phân trần — điều mà bộ công cụ `go` chuẩn không làm
+  RISC-V không có hệ điều hành bên dưới. TinyGo cho ta tắt bộ thu gom rác và
+  scheduler, và xuất ra một nhị phân trần — điều mà bộ công cụ `go` chuẩn không làm
   gọn gàng được.
 
 Ta cũng sẽ không dựa vào chính runtime của TinyGo — Chương 2 lược nó về mức tối

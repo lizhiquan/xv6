@@ -155,7 +155,7 @@ Vậy nên ta biên dịch bằng **TinyGo** và tắt runtime đi:
   "features":     "+m,+a,+c",
   "build-tags":   ["xv6", "baremetal"],
   "gc":           "none",          // không có bộ thu gom rác
-  "scheduler":    "none",          // không có bộ lập lịch goroutine
+  "scheduler":    "none",          // không có scheduler goroutine
   "linker":       "ld.lld",
   "ldflags":      ["-T", "kernel.ld"],
   "code-model":   "medany"
@@ -276,7 +276,7 @@ func start() {
    nguồn interrupt supervisor trong `sie`.
 5. **PMP.** Physical Memory Protection mặc định *từ chối* S-mode truy cập bộ nhớ
    vật lý. Ta mở một vùng duy nhất phủ tất cả để kernel có thể chạy được.
-6. **Timer.** Thiết lập timer interrupt đầu tiên — nhịp tim mà bộ lập lịch về sau
+6. **Timer.** Thiết lập timer interrupt đầu tiên — nhịp tim mà scheduler về sau
    dùng để preempt các tiến trình (Chương 10).
 7. **tp = hartid.** Id của hart chỉ đọc được ở M-mode (`mhartid`). Ta sao nó vào
    thanh ghi `tp` để mã S-mode hỏi "ta là CPU nào?" một cách rẻ tiền. Đây chính là
@@ -334,7 +334,7 @@ func cpuid() int {
 
 Chỉ hart 0 in, nên lời chào xuất hiện một lần thay vì `NCPU` lần. Các hart khác
 rơi thẳng vào vòng lặp idle. (Ở Chương 9 ta sẽ đưa các hart khác lên đúng
-cách; ở Chương 10 tất cả sẽ vào bộ lập lịch.)
+cách; ở Chương 10 tất cả sẽ vào scheduler.)
 
 ---
 

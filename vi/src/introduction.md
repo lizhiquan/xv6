@@ -34,14 +34,14 @@ sự căng thẳng đó từ đầu đến cuối:
   bộ công cụ freestanding/kiểu-TinyGo và tự cung cấp vài ký hiệu runtime cần
   thiết.
 - **Bộ thu gom rác (GC) trong kernel.** Ta sẽ bàn khi nào GC được phép chạy, vì
-  sao trình xử lý interrupt, bộ lập lịch và các đường DMA phải không cấp phát bộ nhớ,
+  sao trình xử lý interrupt, scheduler và các đường DMA phải không cấp phát bộ nhớ,
   và làm sao "ghim" (pin) bộ nhớ.
 - **`unsafe` và các pragma của trình biên dịch.** `unsafe.Pointer`,
   `//go:nosplit`, `//go:noescape` và `//go:linkname` là những thứ làm cho Go mức
   thấp khả thi; ta sẽ học các quy tắc dùng chúng an toàn.
 - **Goroutine không phải là tiến trình của ta.** Ta cố tình tự xây dựng cơ chế
-  chuyển ngữ cảnh thay vì dựa vào goroutine, và sẽ giải thích vì sao một bộ lập
-  lịch kernel cần quyền kiểm soát đó.
+  chuyển ngữ cảnh thay vì dựa vào goroutine, và sẽ giải thích vì sao một scheduler
+  kernel cần quyền kiểm soát đó.
 
 ### Cách đọc
 Mỗi chương đều theo cùng một nhịp: khái niệm → thiết kế → cài đặt → chạy thử dưới
@@ -70,7 +70,7 @@ RISC-V).
 - Đoạn assembly đầu tiên và `start`: dựng stack, hạ từ chế độ machine xuống chế
   độ supervisor.
 - **Vấn đề của Go, ngay từ đầu:** khởi động *không có* runtime của Go — tắt GC và
-  bộ lập lịch goroutine, tự cung cấp các ký hiệu runtime.
+  scheduler goroutine, tự cung cấp các ký hiệu runtime.
 - Cột mốc: in "hello" qua UART từ một kernel Go chạy trên QEMU trần.
 
 ### Chương 3: Giao tiếp với phần cứng — Console
@@ -131,13 +131,13 @@ RISC-V).
 - Mô hình bộ nhớ của Go so với điều một kernel cần; phép nguyên tử ở mức kernel;
   tắt interrupt (`push_off`/`pop_off`).
 - Chạy trên nhiều hart; trạng thái riêng cho từng CPU.
-- Cột mốc: khởi động SMP với tất cả CPU cùng vào bộ lập lịch.
+- Cột mốc: khởi động SMP với tất cả CPU cùng vào scheduler.
 
 ### Chương 10: Lập lịch và chuyển ngữ cảnh
 - Bảng tiến trình, các trạng thái của tiến trình.
 - Chuyển ngữ cảnh bằng assembly: lưu và khôi phục các thanh ghi callee-saved — cơ
   chế chuyển của *ta*, *không* phải goroutine, và vì sao lựa chọn đó là cố ý.
-- Vòng lặp lập lịch, `yield`, và timer interrupt.
+- Vòng lặp scheduler, `yield`, và timer interrupt.
 - `sleep`/`wakeup`: mẫu hình biến điều kiện (condition variable) nằm ở trái tim
   của kernel.
 - Cột mốc: đa nhiệm preemptive qua các tiến trình và CPU.
