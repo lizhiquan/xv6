@@ -1,0 +1,22 @@
+[book]
+title = "Building an Operating System in Go: xv6 on RISC-V"
+authors = ["lizhiquan"]
+description = "Learn operating-system fundamentals by building a complete xv6 kernel in Go on RISC-V."
+language = "en"
+src = "src"
+
+[output.html]
+# The site is served as a GitHub Pages *project* site at https://lizhiquan.github.io/xv6/
+# so every absolute link/asset must be prefixed with /xv6/.
+site-url = "/xv6/"
+default-theme = "navy"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/lizhiquan/xv6"
+edit-url-template = "https://github.com/lizhiquan/xv6/edit/main/{path}"
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.search]
+enable = true
