@@ -6,7 +6,7 @@
 # Phần I — Nền tảng
 
 - [Hệ điều hành làm những gì](ch01-what-an-os-does.md)
-- [Từ lúc bật nguồn đến `main`]()
+- [Từ lúc bật nguồn đến `main`](ch02-power-on-to-main.md)
 - [Giao tiếp với phần cứng — Console]()
 
 # Phần II — Bộ nhớ
