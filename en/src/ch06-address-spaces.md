@@ -23,7 +23,7 @@ two special pages pinned at the very top:
    MAXVA ─┐
           │  TRAMPOLINE   ── trap entry/exit code (same page as the kernel's)
           │  TRAPFRAME    ── saved user registers during a trap
-          │      ⋮         (a gap)
+          │      :         (a gap)
           │  heap (grows up, via sbrk)
           │  user stack   (one page, with a guard page below)
           │  data + bss

@@ -52,7 +52,7 @@ of the Sv39 range):
  TRAMPOLINE     ├────────────────────┤  = MAXVA - PGSIZE
                 │   TRAPFRAME        │  saved user registers (one per process)
  TRAPFRAME      ├────────────────────┤  = TRAMPOLINE - PGSIZE
-                │        ⋮           │
+                │        :           │
 ```
 
 ```go
@@ -103,7 +103,7 @@ Each process's space runs from 0 upward, with the two special pages at the top
  MAXVA      ┌──────────────┐
             │  TRAMPOLINE  │  (no U bit — user can't touch it)
             │  TRAPFRAME   │  (no U bit)
-            │      ⋮       │
+            │      :       │
             │  heap        │  grows up via sbrk (Chapter 6, 18)
             │  guard page  │  unmapped — catches stack overflow
             │  user stack  │  one page (USERSTACK)
