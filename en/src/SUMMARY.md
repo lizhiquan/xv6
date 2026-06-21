@@ -56,3 +56,4 @@
 - [Part I — Foundations](solutions-part1.md)
 - [Part II — Memory](solutions-part2.md)
 - [Part III — Processes, Traps, Concurrency](solutions-part3.md)
+- [Part IV — File System](solutions-part4.md)
