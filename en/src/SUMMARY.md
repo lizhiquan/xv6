@@ -36,7 +36,7 @@
 
 - [The User Library](ch18-user-library.md)
 - [The Shell](ch19-shell.md)
-- [The Userland Utilities]()
+- [The Userland Utilities](ch20-userland-utilities.md)
 - [Testing It All]()
 
 # Part VI — Beyond the Kernel
