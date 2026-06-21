@@ -42,7 +42,7 @@
 # Part VI — Beyond the Kernel
 
 - [Reflections on Go in a Kernel](ch22-reflections.md)
-- [Where to Go Next]()
+- [Where to Go Next](ch23-where-next.md)
 
 # Appendices
 
