@@ -29,7 +29,7 @@
 - [The Buffer Cache](ch13-buffer-cache.md)
 - [Crash Recovery — the Logging Layer](ch14-logging.md)
 - [Inodes and the On-Disk Layout](ch15-inodes.md)
-- [Directories and Path Names]()
+- [Directories and Path Names](ch16-directories.md)
 - [The File Descriptor Layer]()
 
 # Part V — User Space
