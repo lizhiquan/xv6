@@ -17,7 +17,7 @@
 
 # Phần III — Tiến trình, Trap và Đồng thời
 
-- [Trap, ngắt và lời gọi hệ thống]()
+- [Trap, interrupt và syscall]()
 - [Tiến trình đầu tiên và `exec`]()
 - [Khóa và đa lõi]()
 - [Lập lịch và chuyển ngữ cảnh]()

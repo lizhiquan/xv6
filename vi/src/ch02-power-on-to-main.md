@@ -107,7 +107,7 @@ _entry:
         add  sp, sp, a0
         call start               # vào Go (start.go)
 spin:
-        j spin                   # start() không bao giờ trở về; lặp phòng hờ
+        j spin                   # start() không bao giờ return; lặp phòng hờ
 ```
 
 `stack0` là một mảng liền mạch; hart 0 nhận các byte `[0, 4096)`, hart 1 nhận
@@ -220,24 +220,24 @@ kernel thật:
 // start.go
 package kernel
 
-// Các bit của mstatus chọn mức đặc quyền mà mret sẽ trở về.
+// Các bit của mstatus chọn mức đặc quyền mà mret sẽ return tới.
 const (
 	mstatusMPPMask = 3 << 11 // trường "mức đặc quyền trước"
 	mstatusMPPS    = 1 << 11 // = Supervisor
-	sieSEIE        = 1 << 9  // ngắt ngoài (external) của supervisor
-	sieSTIE        = 1 << 5  // ngắt định thời (timer) của supervisor
-	sieSSIE        = 1 << 1  // ngắt phần mềm (software) của supervisor
+	sieSEIE        = 1 << 9  // external interrupt của supervisor
+	sieSTIE        = 1 << 5  // timer interrupt của supervisor
+	sieSSIE        = 1 << 1  // software interrupt của supervisor
 )
 
 //go:export start
 func start() {
-	// 1. Bảo mret trở về chế độ supervisor.
+	// 1. Bảo mret return vào chế độ supervisor.
 	x := r_mstatus()
 	x &^= mstatusMPPMask
 	x |= mstatusMPPS
 	w_mstatus(x)
 
-	// 2. Bảo mret "trở về" tại lệnh nào: main của ta.
+	// 2. Bảo mret "return" tại lệnh nào: main của ta.
 	w_mepc(mainPC())
 
 	// 3. Phân trang đang tắt; main sẽ bật nó ở Chương 5.
@@ -252,43 +252,43 @@ func start() {
 	w_pmpaddr0(0x3fffffffffffff)
 	w_pmpcfg0(0xf)
 
-	// 6. Thiết lập ngắt định thời (chi tiết bên dưới).
+	// 6. Thiết lập timer interrupt (chi tiết bên dưới).
 	timerInit()
 
 	// 7. Cất id của hart này vào tp để cpuid() đọc về sau.
 	w_tp(r_mhartid())
 
-	// 8. "Trở về" chế độ supervisor tại main. Không quay lại.
+	// 8. "return" vào chế độ supervisor tại main. Không quay lại.
 	mret()
 }
 ```
 
 Đi qua tám bước:
 
-1. **MPP = Supervisor.** Lệnh `mret` trở về mức đặc quyền mà trường `MPP` của
+1. **MPP = Supervisor.** Lệnh `mret` return tới mức đặc quyền mà trường `MPP` của
    `mstatus` chỉ định. Ta đặt nó thành Supervisor.
 2. **mepc = main.** `mret` nhảy tới địa chỉ trong `mepc`. Ta trỏ nó vào `main`.
    `mainPC()` là một hàm phụ assembly một dòng (`la a0, main; ret`) cho ra địa chỉ
    mã của `main`, vốn khó lấy trực tiếp trong Go.
 3. **satp = 0.** Phân trang vẫn tắt cho tới khi Chương 5 dựng một bảng trang.
 4. **Ủy quyền trap.** Mặc định mọi trap đi về M-mode. Ta ủy quyền ngoại lệ
-   (`medeleg`) và ngắt (`mideleg`) về S-mode để kernel xử lý trực tiếp, và bật các
-   nguồn ngắt supervisor trong `sie`.
+   (`medeleg`) và interrupt (`mideleg`) về S-mode để kernel xử lý trực tiếp, và bật các
+   nguồn interrupt supervisor trong `sie`.
 5. **PMP.** Physical Memory Protection mặc định *từ chối* S-mode truy cập bộ nhớ
    vật lý. Ta mở một vùng duy nhất phủ tất cả để kernel có thể chạy được.
-6. **Timer.** Thiết lập ngắt đồng hồ đầu tiên — nhịp tim mà bộ lập lịch về sau
-   dùng để giành quyền các tiến trình (Chương 10).
+6. **Timer.** Thiết lập timer interrupt đầu tiên — nhịp tim mà bộ lập lịch về sau
+   dùng để preempt các tiến trình (Chương 10).
 7. **tp = hartid.** Id của hart chỉ đọc được ở M-mode (`mhartid`). Ta sao nó vào
    thanh ghi `tp` để mã S-mode hỏi "ta là CPU nào?" một cách rẻ tiền. Đây chính là
    thứ `cpuid()` trả về.
 8. **mret.** Cú hạ xuống. Nhớ lại Chương 1 (§1.5): không có lệnh nào để *vào* một
-   mức đặc quyền thấp hơn, nên ta giả vờ một cú *trở về* từ một trap chưa từng xảy
+   mức đặc quyền thấp hơn, nên ta giả vờ một cú *return* từ một trap chưa từng xảy
    ra. Sau `mret`, CPU ở S-mode, đang thực thi `main`.
 
 ### Thiết lập timer
 
 ```go
-// start.go — yêu cầu hart này phát ra ngắt định thời
+// start.go — yêu cầu hart này phát ra timer interrupt
 func timerInit() {
 	w_menvcfg(r_menvcfg() | (1 << 63)) // bật phần mở rộng Sstc (stimecmp)
 	w_mcounteren(r_mcounteren() | 2)   // cho S-mode đọc CSR time
@@ -296,9 +296,9 @@ func timerInit() {
 }
 ```
 
-Với phần mở rộng **Sstc**, mã supervisor có thể nạp ngắt định thời kế tiếp bằng
+Với phần mở rộng **Sstc**, mã supervisor có thể nạp timer interrupt kế tiếp bằng
 cách ghi thẳng `stimecmp` — không cần trap về machine mỗi nhịp. Ta chỉ cần M-mode
-ở đây để *bật* khả năng đó; từ Chương 10 trở đi, timer được xử lý hoàn toàn trong
+ở đây để *bật* khả năng đó; từ Chương 10 trở đi, timer được xử lý hoàn toàn ở
 S-mode.
 
 ---
@@ -333,7 +333,7 @@ func cpuid() int {
 ```
 
 Chỉ hart 0 in, nên lời chào xuất hiện một lần thay vì `NCPU` lần. Các hart khác
-rơi thẳng vào vòng lặp nhàn rỗi. (Ở Chương 9 ta sẽ đưa các hart khác lên đúng
+rơi thẳng vào vòng lặp idle. (Ở Chương 9 ta sẽ đưa các hart khác lên đúng
 cách; ở Chương 10 tất cả sẽ vào bộ lập lịch.)
 
 ---
@@ -367,7 +367,7 @@ func uartReg(off uintptr) *uint8 {
 func uartInitBare() {} // không cần cấu hình gì cho xuất kiểu polling dưới QEMU
 
 func uartPutc(c byte) {
-	for *uartReg(uartLSR)&lsrTHRE == 0 { // quay tại chỗ tới khi UART nhận được byte
+	for *uartReg(uartLSR)&lsrTHRE == 0 { // spin tới khi UART nhận được byte
 	}
 	*uartReg(uartTHR) = c
 }
@@ -381,11 +381,11 @@ func print(s string) {
 ```
 
 Cả "trình điều khiển thiết bị" gói gọn trong `uartPutc`: đọc thanh ghi trạng thái
-dòng tại `0x10000005`, quay vòng chờ bit "phát rỗng", rồi ghi một byte vào
+dòng tại `0x10000005`, spin chờ bit "phát rỗng", rồi ghi một byte vào
 `0x10000000`. Đây là ý tưởng I/O-ánh-xạ-bộ-nhớ ở Chương 1 được cụ thể hóa —
 **không có lệnh I/O đặc biệt nào; một thiết bị chỉ là bộ nhớ tại một địa chỉ đã
-biết.** Phép ép kiểu `unsafe.Pointer` chính là kỹ thuật "khung nhìn có kiểu trên
-một địa chỉ vật lý" mà ta sẽ dựa vào cho bảng trang và trapframe về sau.
+biết.** Phép ép kiểu `unsafe.Pointer` chính là kỹ thuật "view có kiểu trên một
+địa chỉ vật lý" mà ta sẽ dựa vào cho bảng trang và trapframe về sau.
 
 ---
 
@@ -429,7 +429,7 @@ nào bên dưới.
 
 ## 2.9 Những chỗ ta lướt qua (và nơi xử lý chúng)
 
-- **Các hart khác** quay trong vòng lặp nhàn rỗi của `main`. Việc đưa đa lõi lên
+- **Các hart khác** spin trong vòng lặp idle của `main`. Việc đưa đa lõi lên
   đúng cách, gồm cả đồng bộ để hart 0 hoàn tất khởi tạo trước, là Chương 9.
 - **`print` không an toàn khi gọi từ hai hart cùng lúc** — các byte sẽ đan xen.
   Ở đây ta chỉ in từ hart 0; khóa console là Chương 3, còn bản thân khóa là
@@ -450,9 +450,9 @@ nào bên dưới.
 - Một kernel không thể dùng runtime Go chuẩn; **TinyGo với `gc: none` và
   `scheduler: none`** cho ta Go freestanding.
 - `start` chỉ làm những gì *bắt buộc* phải làm ở chế độ machine, rồi hạ xuống chế
-  độ supervisor bằng cách giả vờ một cú trở về trap với **`mret`**.
+  độ supervisor bằng cách giả vờ một cú *return* từ trap với **`mret`**.
 - **I/O ánh xạ bộ nhớ** nghĩa là một trình điều khiển thiết bị có thể nhỏ tới mức
-  "quay vòng trên một bit trạng thái, rồi ghi một byte."
+  "spin trên một bit trạng thái, rồi ghi một byte."
 
 ---
 
@@ -475,12 +475,12 @@ nào bên dưới.
    câu trả lời với ba nhiệm vụ của hệ điều hành ở Chương 1 (§1.1).
 
 5. **Byte trên đường truyền.** Sửa `uartPutc` để *không* chờ `lsrTHRE` (bỏ vòng
-   lặp quay). Lời chào còn xuất hiện dưới QEMU không? Bạn có tin tưởng cách này
-   trên phần cứng thật không? Giải thích vòng lặp quay bảo vệ chống lại điều gì.
+   lặp spin). Lời chào còn xuất hiện dưới QEMU không? Bạn có tin tưởng cách này
+   trên phần cứng thật không? Giải thích vòng lặp spin bảo vệ chống lại điều gì.
 
 ---
 
 *Tiếp theo: **Chương 3 — Giao tiếp với phần cứng: Console**, nơi ta biến đoạn
-UART hai dòng này thành một trình điều khiển thật, điều khiển bằng ngắt, có nhập,
+UART hai dòng này thành một trình điều khiển thật, điều khiển bằng interrupt, có nhập,
 có đệm xuất, và một `printk` đàng hoàng — tiếng nói của kernel trong suốt phần còn
 lại của cuốn sách.*

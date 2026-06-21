@@ -34,7 +34,7 @@ sự căng thẳng đó từ đầu đến cuối:
   bộ công cụ freestanding/kiểu-TinyGo và tự cung cấp vài ký hiệu runtime cần
   thiết.
 - **Bộ thu gom rác (GC) trong kernel.** Ta sẽ bàn khi nào GC được phép chạy, vì
-  sao trình xử lý ngắt, bộ lập lịch và các đường DMA phải không cấp phát bộ nhớ,
+  sao trình xử lý interrupt, bộ lập lịch và các đường DMA phải không cấp phát bộ nhớ,
   và làm sao "ghim" (pin) bộ nhớ.
 - **`unsafe` và các pragma của trình biên dịch.** `unsafe.Pointer`,
   `//go:nosplit`, `//go:noescape` và `//go:linkname` là những thứ làm cho Go mức
@@ -94,7 +94,7 @@ RISC-V).
 ### Chương 5: Bộ nhớ ảo và bảng trang
 - Phân trang Sv39 của RISC-V: bảng trang ba cấp, PTE, các bit quyền.
 - `walk`, `mappages`, và dựng bảng trang của kernel.
-- Thiết kế Go: biểu diễn PTE và bảng trang như những "khung nhìn" `unsafe` có kiểu
+- Thiết kế Go: biểu diễn PTE và bảng trang như những "view" `unsafe` có kiểu
   trên các trang vật lý.
 - Bật phân trang (`satp`, `sfence.vma`) — khoảnh khắc các địa chỉ thay đổi ý nghĩa
   ngay dưới chân bạn.
@@ -111,12 +111,12 @@ RISC-V).
 
 ## Phần III — Tiến trình, Trap và Đồng thời
 
-### Chương 7: Trap, ngắt và lời gọi hệ thống
+### Chương 7: Trap, interrupt và syscall
 - Cơ chế trap của RISC-V: `stvec`, `scause`, `sepc`, `sscratch`.
 - Đường trap của người dùng và của kernel; trang trampoline.
 - Viết phần vào/ra trap bằng assembly và lưu/khôi phục trapframe.
-- Bảng điều phối lời gọi hệ thống và việc lấy đối số.
-- Cột mốc: một chương trình người dùng thực hiện lời gọi hệ thống và trở về.
+- Bảng điều phối syscall và việc lấy đối số.
+- Cột mốc: một chương trình người dùng thực hiện một syscall và return.
 
 ### Chương 8: Tiến trình đầu tiên và `exec`
 - Nạp ELF; dựng chương trình người dùng đầu tiên (`initcode`).
@@ -129,7 +129,7 @@ RISC-V).
   rào (fence) của RISC-V.
 - Spinlock và sleep lock.
 - Mô hình bộ nhớ của Go so với điều một kernel cần; phép nguyên tử ở mức kernel;
-  tắt ngắt (`push_off`/`pop_off`).
+  tắt interrupt (`push_off`/`pop_off`).
 - Chạy trên nhiều hart; trạng thái riêng cho từng CPU.
 - Cột mốc: khởi động SMP với tất cả CPU cùng vào bộ lập lịch.
 
@@ -137,10 +137,10 @@ RISC-V).
 - Bảng tiến trình, các trạng thái của tiến trình.
 - Chuyển ngữ cảnh bằng assembly: lưu và khôi phục các thanh ghi callee-saved — cơ
   chế chuyển của *ta*, *không* phải goroutine, và vì sao lựa chọn đó là cố ý.
-- Vòng lặp lập lịch, `yield`, và ngắt định thời (timer interrupt).
+- Vòng lặp lập lịch, `yield`, và timer interrupt.
 - `sleep`/`wakeup`: mẫu hình biến điều kiện (condition variable) nằm ở trái tim
   của kernel.
-- Cột mốc: đa nhiệm theo kiểu giành quyền (preemptive) qua các tiến trình và CPU.
+- Cột mốc: đa nhiệm preemptive qua các tiến trình và CPU.
 
 ### Chương 11: `fork`, `wait`, `exit` và `kill`
 - Vòng đời tiến trình và quan hệ cha/con.
@@ -188,7 +188,7 @@ RISC-V).
 ## Phần V — Không gian người dùng
 
 ### Chương 18: Thư viện người dùng
-- Runtime phía người dùng: các stub lời gọi hệ thống sinh tự động và phần bọc Go
+- Runtime phía người dùng: các stub syscall sinh tự động và phần bọc Go
   của chúng.
 - Một thư viện chuẩn nhỏ — xuất định dạng, `malloc` — và câu chuyện runtime Go ở
   chế độ người dùng.
