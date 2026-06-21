@@ -7,7 +7,7 @@
 
 - [What an Operating System Does](ch01-what-an-os-does.md)
 - [From Power-On to `main`](ch02-power-on-to-main.md)
-- [Talking to Hardware — the Console]()
+- [Talking to Hardware — the Console](ch03-console.md)
 
 # Part II — Memory
 
