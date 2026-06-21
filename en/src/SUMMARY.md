@@ -54,3 +54,4 @@
 # Solutions
 
 - [Part I — Foundations](solutions-part1.md)
+- [Part II — Memory](solutions-part2.md)
