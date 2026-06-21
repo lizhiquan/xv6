@@ -1,6 +1,7 @@
 # Summary
 
 [Introduction](introduction.md)
+[Chapter 0 — Setting Up Your Toolchain](ch00-setup.md)
 
 # Part I — Foundations
 

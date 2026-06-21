@@ -1,6 +1,7 @@
 # Mục lục
 
 [Giới thiệu](introduction.md)
+[Chương 0 — Cài đặt bộ công cụ](ch00-setup.md)
 
 # Phần I — Nền tảng
 
