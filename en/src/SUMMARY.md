@@ -18,7 +18,7 @@
 # Part III — Processes, Traps, and Concurrency
 
 - [Traps, Interrupts, and System Calls](ch07-traps-syscalls.md)
-- [The First Process and `exec`]()
+- [The First Process and `exec`](ch08-first-process-exec.md)
 - [Locking and Multicore]()
 - [Scheduling and Context Switching]()
 - [`fork`, `wait`, `exit`, and `kill`]()
