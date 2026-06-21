@@ -34,7 +34,7 @@
 
 # Part V — User Space
 
-- [The User Library]()
+- [The User Library](ch18-user-library.md)
 - [The Shell]()
 - [The Userland Utilities]()
 - [Testing It All]()
