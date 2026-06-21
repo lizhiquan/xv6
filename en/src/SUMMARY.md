@@ -17,7 +17,7 @@
 
 # Part III — Processes, Traps, and Concurrency
 
-- [Traps, Interrupts, and System Calls]()
+- [Traps, Interrupts, and System Calls](ch07-traps-syscalls.md)
 - [The First Process and `exec`]()
 - [Locking and Multicore]()
 - [Scheduling and Context Switching]()
