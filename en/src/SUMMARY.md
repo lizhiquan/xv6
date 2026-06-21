@@ -48,5 +48,5 @@
 
 - [RISC-V Reference](appendix-a-riscv.md)
 - [The Go Freestanding Toolchain](appendix-b-toolchain.md)
-- [QEMU and Debugging]()
+- [QEMU and Debugging](appendix-c-qemu-debugging.md)
 - [The Memory Map]()
