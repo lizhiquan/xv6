@@ -94,19 +94,19 @@ Dưới đây là hệ thống mà ta nhắm tới, phác họa theo các tầng
 
 ```
    ┌──────────────────────────────────────────────────────────┐
-   │ người dùng:  sh  ls  cat  grep  usertests       (Phần V)  │
+   │ người dùng:  sh  ls  cat  grep  usertests       (Phần V) │
    ├──────────────────────────────────────────────────────────┤
-   │ syscall: fork exec wait open read write pipe    (Phần III)│
+   │ syscall: fork exec wait open read write pipe   (Phần III)│
    ├───────────────┬───────────────┬──────────────────────────┤
-   │ tiến trình &  │ hệ thống tập  │ bộ nhớ                    │
-   │ lập lịch      │ tin (fd→file→ │ (cấp phát trang, bảng     │
-   │ (proc, switch,│  inode→log→   │  trang, không gian địa    │
-   │  trap)        │  buffer→đĩa)  │  chỉ người dùng/kernel)   │
-   │  Phần III     │  Phần IV      │  Phần II                  │
+   │ tiến trình &  │ hệ thống tập  │ bộ nhớ                   │
+   │ lập lịch      │ tin (fd→file→ │ (cấp phát trang, bảng    │
+   │ (proc, switch,│  inode→log→   │  trang, không gian địa   │
+   │  trap)        │  buffer→đĩa)  │  chỉ người dùng/kernel)  │
+   │  Phần III     │  Phần IV      │  Phần II                 │
    ├───────────────┴───────────────┴──────────────────────────┤
-   │ boot + console: entry, start, uart, printk      (Phần I)  │
+   │ boot + console: entry, start, uart, printk      (Phần I) │
    ├──────────────────────────────────────────────────────────┤
-   │ phần cứng: CPU RISC-V, RAM, UART, virtio, PLIC (QEMU virt)│
+   │ phần cứng: RISC-V, RAM, UART, virtio, PLIC (QEMU virt)   │
    └──────────────────────────────────────────────────────────┘
 ```
 
