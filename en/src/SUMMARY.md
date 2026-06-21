@@ -50,3 +50,7 @@
 - [The Go Freestanding Toolchain](appendix-b-toolchain.md)
 - [QEMU and Debugging](appendix-c-qemu-debugging.md)
 - [The Memory Map](appendix-d-memory-map.md)
+
+# Solutions
+
+- [Part I — Foundations](solutions-part1.md)
