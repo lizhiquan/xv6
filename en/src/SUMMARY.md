@@ -27,7 +27,7 @@
 
 - [The Disk Driver](ch12-disk-driver.md)
 - [The Buffer Cache](ch13-buffer-cache.md)
-- [Crash Recovery — the Logging Layer]()
+- [Crash Recovery — the Logging Layer](ch14-logging.md)
 - [Inodes and the On-Disk Layout]()
 - [Directories and Path Names]()
 - [The File Descriptor Layer]()
