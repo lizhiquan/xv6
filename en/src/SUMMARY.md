@@ -11,7 +11,7 @@
 
 # Part II — Memory
 
-- [Physical Memory Allocation]()
+- [Physical Memory Allocation](ch04-physical-memory.md)
 - [Virtual Memory and Page Tables]()
 - [Per-Process Address Spaces]()
 
