@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>xv6 in Go — choose a language / chọn ngôn ngữ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // Default to Vietnamese for vi-* browsers, English otherwise.
+      var lang = (navigator.language || "en").toLowerCase().indexOf("vi") === 0 ? "vi" : "en";
+      window.location.replace("./" + lang + "/");
+    </script>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 32rem; margin: 6rem auto;
+             padding: 0 1rem; line-height: 1.6; }
+      a { display: inline-block; margin-right: 1rem; font-size: 1.1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Building an OS in Go: xv6 on RISC-V</h1>
+    <p>Redirecting… If nothing happens, choose a language:</p>
+    <p>
+      <a href="./en/">English</a>
+      <a href="./vi/">Tiếng Việt</a>
+    </p>
+  </body>
+</html>

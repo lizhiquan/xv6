@@ -1,2 +1,4 @@
 # mdBook build output
-/book
+/site
+/en/book
+/vi/book

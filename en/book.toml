@@ -6,13 +6,13 @@ language = "en"
 src = "src"
 
 [output.html]
-# The site is served as a GitHub Pages *project* site at https://lizhiquan.github.io/xv6/
-# so every absolute link/asset must be prefixed with /xv6/.
-site-url = "/xv6/"
+# English edition is served at https://lizhiquan.github.io/xv6/en/
+site-url = "/xv6/en/"
 default-theme = "navy"
 preferred-dark-theme = "navy"
 git-repository-url = "https://github.com/lizhiquan/xv6"
-edit-url-template = "https://github.com/lizhiquan/xv6/edit/main/{path}"
+edit-url-template = "https://github.com/lizhiquan/xv6/edit/main/en/{path}"
+additional-js = ["lang-switch.js"]
 
 [output.html.fold]
 enable = true

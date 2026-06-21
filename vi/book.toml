@@ -1,0 +1,22 @@
+[book]
+title = "Xây dựng hệ điều hành bằng Go: xv6 trên RISC-V"
+authors = ["lizhiquan"]
+description = "Học các nguyên lý nền tảng của hệ điều hành bằng cách tự xây dựng kernel xv6 hoàn chỉnh bằng Go trên RISC-V."
+language = "vi"
+src = "src"
+
+[output.html]
+# Bản tiếng Việt phục vụ tại https://lizhiquan.github.io/xv6/vi/
+site-url = "/xv6/vi/"
+default-theme = "navy"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/lizhiquan/xv6"
+edit-url-template = "https://github.com/lizhiquan/xv6/edit/main/vi/{path}"
+additional-js = ["lang-switch.js"]
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.search]
+enable = true
