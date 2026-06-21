@@ -30,7 +30,7 @@
 - [Crash Recovery — the Logging Layer](ch14-logging.md)
 - [Inodes and the On-Disk Layout](ch15-inodes.md)
 - [Directories and Path Names](ch16-directories.md)
-- [The File Descriptor Layer]()
+- [The File Descriptor Layer](ch17-file-descriptors.md)
 
 # Part V — User Space
 
