@@ -57,3 +57,5 @@
 - [Part II — Memory](solutions-part2.md)
 - [Part III — Processes, Traps, Concurrency](solutions-part3.md)
 - [Part IV — File System](solutions-part4.md)
+- [Part V — User Space](solutions-part5.md)
+- [Part VI — Beyond the Kernel](solutions-part6.md)
