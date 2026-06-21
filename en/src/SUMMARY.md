@@ -26,7 +26,7 @@
 # Part IV — File System
 
 - [The Disk Driver](ch12-disk-driver.md)
-- [The Buffer Cache]()
+- [The Buffer Cache](ch13-buffer-cache.md)
 - [Crash Recovery — the Logging Layer]()
 - [Inodes and the On-Disk Layout]()
 - [Directories and Path Names]()
