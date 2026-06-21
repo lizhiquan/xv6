@@ -20,7 +20,7 @@
 - [Traps, Interrupts, and System Calls](ch07-traps-syscalls.md)
 - [The First Process and `exec`](ch08-first-process-exec.md)
 - [Locking and Multicore](ch09-locking-multicore.md)
-- [Scheduling and Context Switching]()
+- [Scheduling and Context Switching](ch10-scheduling.md)
 - [`fork`, `wait`, `exit`, and `kill`]()
 
 # Part IV — File System
